@@ -1,7 +1,7 @@
 let employees = [];
-// const urlAPI = `https://randomuser.me/api/?results=12&inc=name, picture, email, location, phone, dob &noinfo &nat=US`;
+const urlAPI = `https://randomuser.me/api/?results=12&inc=name,picture,email,location,phone,dob&noinfo&nat=US`;
 const gridContainer = document.querySelector('.grid-container');
-const overlay = documen.querySelector('.overlay');
+const overlay = document.querySelector('.overlay');
 const modalContainer = document.querySelector('.modal-content');
 const modalClose = document.querySelector('.modal-close');
 
@@ -12,16 +12,15 @@ fetch(urlAPI)
   .then(displayEmployees)
   .catch(err => console.log(err))
 
-
-// functions
-function displayEmployees(employeeData) {
-  employees = employeeData;
+  // functions
+  function displayEmployees(employeeData) {
+    employees = employeeData;
 
   // store the employee HTML
   let employeeHTML = '';
 
   // loop through each employee and create HTML
-  employees.forEach(employee, index => {
+  employees.forEach((employee, index) => {
     let name = employee.name;
     let email = employee.email;
     let city = employee.location.city;
@@ -43,7 +42,8 @@ function displayEmployees(employeeData) {
 }
 
 function displayModal(index) {
-  let {name, dob, phone, location: {city, street, state, postcode}, picture } = employees[index];
+  let { name, dob, phone, email, location: { city, street, state, postcode}, picture } = employees[index];
+  
 
   let date = new Date(dob.date);
 
@@ -55,10 +55,13 @@ function displayModal(index) {
       <p class="address">${city}</p>
       <hr />
       <p>${phone}</p>
-      <p class="address">${street}, ${state} ${postcode}</p>
+      <p class="address">${street.number} ${street.name}, ${state} ${postcode}</p>
       <p>Birthday: ${date.getMonth()}/${date.getDate()}/${date.getFullYear()}</p>
     </div>
   `;
+
+  overlay.classList.remove('hidden');
+  modalContainer.innerHTML = modalHTML;
 }
 
 // events
